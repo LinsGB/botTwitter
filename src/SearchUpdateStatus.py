@@ -1,4 +1,5 @@
 import tweepy
+from src import methodsForStream
 
 class SearchUpdateStatus(tweepy.StreamListener):
     def __init__(self, api):
@@ -6,11 +7,23 @@ class SearchUpdateStatus(tweepy.StreamListener):
         self.me = api.me()
 
     def on_status(self, tweet):
-        print(f"{tweet.user.name}:{tweet.text}")
-
-        self.api.update_status(f"@{tweet.user.screen_name} love u baybe", in_reply_to_status_id = tweet.id, auto_populate_reply_metadata = True)
-
+        print(f"{tweet.user.name}:{tweet.text}\n\n")
+        #print(tweet.retweeted_status) se tiver esse dado é RT
+        tweet_id_str = tweet.id_str
+        #user_id_str  = tweet.user.id_str
+        #user_name    = tweet.user.screen_name
+        #userTableInteration(user_id_str, user_name)
+        try:
+            tweet.retweeted_status
+            methodsForStream.tweetTableInteration(tweet_id_str, tweet.text)
+        except:
+            pass
 
     def on_error(self, status):
         print("Error detected")
+
+
+
+
+
 
