@@ -1,11 +1,14 @@
 import tweepy
-from src import SearchUpdateStatus,Texts
+from src.SearchStatus import SearchStatus
+from src.Texts import Texts
 from database import dbComands
 
-def streamStatus(api, filterText):
-    tweets_listener = SearchUpdateStatus(api)
+def streamStatus(api):
+    texts = Texts()
+    words = texts.getWords()
+    tweets_listener = SearchStatus(api)
     stream = tweepy.Stream(api.auth, tweets_listener)
-    stream.filter(track = filterText)
+    stream.filter(track = words)
 
 def uppdateStatus(api):
     tweet_ids = dbComands.runComandFetchall("SELECT id, twitter_tweet_id FROM twitter.tweet where responded = 0")
@@ -20,4 +23,9 @@ def uppdateStatus(api):
             except:
                 dbComands.runComandCommit("DELETE FROM twitter.user_tweet WHERE tweet_id = %s", (tweet_id[0]))
                 dbComands.runComandCommit("DELETE FROM twitter.tweet WHERE id = %s", (tweet_id[0]))
+
+def searchTweets(api):
+    texts = Texts()
+    for tweet in  api.search(q = texts.words, count = 5, until = texts.date):
+        print(tweet.text)
             

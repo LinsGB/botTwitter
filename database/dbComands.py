@@ -30,12 +30,12 @@ def runComandCommit(comand, values):
         mydb = dbConnector.buildConnector()
         cursor = mydb.cursor()
         cursor.execute(comand, values)
-        #print("CURSOR EXECUTE OK")
+        print("CURSOR EXECUTE OK")
         mydb.commit()
-        #print("COMMIT OK")
+        print("COMMIT OK")
         return True
     except:
-    #print("COMIT/CURSOR EXECUTE ERROR")
+        print("COMIT/CURSOR EXECUTE ERROR")
         return False
         
     

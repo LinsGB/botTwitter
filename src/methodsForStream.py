@@ -1,5 +1,5 @@
 from database import dbComands
-from src import Texts
+from src.Texts import Texts
 
 def userTableInteration(user_id_str, name):
     #print("\n\nuserTableInteration:\n")
@@ -9,7 +9,7 @@ def userTableInteration(user_id_str, name):
 
 def tweetTableInteration(tweet_id_str, text):
     texts = Texts()
-    for tex_to_compar in texts:
+    for tex_to_compar in texts.getWords():
         if(tex_to_compar in text.lower()):
             dbComands.runComandCommit("INSERT INTO twitter.tweet (twitter_tweet_id, text, responded) VALUES (%s, %s, %s)", (tweet_id_str, text, 0))
             return
